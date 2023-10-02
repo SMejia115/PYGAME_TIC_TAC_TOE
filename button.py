@@ -1,8 +1,8 @@
 import pygame 
 
 class Button:
-  def _init_ (self, x, y, width, height, image, hover_image, action):
-    self.rect = pygame.rect(x,y,width,height)
+  def __init__ (self, x, y, width, height, image, hover_image, action):
+    self.rect = pygame.Rect(x,y,width,height)
     self.image = image
     self.hover_image = hover_image
     self.action = action
