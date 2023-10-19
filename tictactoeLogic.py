@@ -1,7 +1,7 @@
 import pygame
 import sys
 from button import Button
-from game import run_game
+
 
 
 # Constantes
@@ -22,10 +22,11 @@ PLAYER2_COLOR = (255, 255, 255)  # Navy Blue
 RED = (255, 0, 0)
 
 # Inicialización de Pygame
+font_path = "C:/Windows/Fonts/Arial.ttf"
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic Tac Toe")
-font = pygame.font.Font(None, 55)
+font = pygame.font.Font(font_path, 55)
 
 # Inicialización del tablero
 board = [["", "", ""],
@@ -86,12 +87,12 @@ def check_win_or_draw(board):
 # Bucle principal del juego
 
 def run_tic_tac_toe():
-
   global current_player
   restart_button = Button(225, 400, 150, 50, pygame.image.load("./images/buttons/resetButton2.png"), pygame.image.load("./images/buttons/resetButton1.png"), run_tic_tac_toe)
   exit_button = Button(225, 400, 150, 50, pygame.image.load("./images/buttons/exitButton2.png"), pygame.image.load("./images/buttons/exitButton1.png"), lambda: print("Exit button clicked"))
   buttons = [restart_button, exit_button]
-  while True:
+  game_over = False
+  while not game_over:
 
     winner_text = ""  # Inicializamos winner_text como cadena vacía
 
@@ -120,12 +121,18 @@ def run_tic_tac_toe():
     if check_result := check_win_or_draw(board):
         if check_result == "Empate":
             winner_text = font.render("Empate!", True, RED)
+            screen.blit(winner_text, (SCREEN_WIDTH // 2 - winner_text.get_width() // 2, SCREEN_HEIGHT // 2 - winner_text.get_height() // 2))
+            game_over = True
         else:
             if current_player == "X":
                 winner_text = font.render("Jugador O gana!", True, RED)
+                screen.blit(winner_text, (SCREEN_WIDTH // 2 - winner_text.get_width() // 2, SCREEN_HEIGHT // 2 - winner_text.get_height() // 2))
+                exit_button.draw(screen)
+                game_over = True
             else:
                 winner_text = font.render("Jugador X gana!", True, RED)
-        for button in buttons:
-            button.draw(screen)
+                screen.blit(winner_text, (SCREEN_WIDTH // 2 - winner_text.get_width() // 2, SCREEN_HEIGHT // 2 - winner_text.get_height() // 2))
+                exit_button.draw(screen)
+                game_over = True
 
     pygame.display.flip()
